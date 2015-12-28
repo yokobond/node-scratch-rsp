@@ -1,5 +1,5 @@
 {
-  "name": "node-scratch-rsp",
+  "name": "scratch-rsp",
   "version": "0.0.1",
   "description": "Node module to connect Scratch via Remote-Sensor-Protocol.",
   "main": "index.js",

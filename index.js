@@ -1,7 +1,7 @@
 /**
  * Connector to Scratch via Remote-Sensor-Protocol.
  * 
- * @module node-scratch-rsp
+ * @module scratch-rsp
  * @author Koji Yokokawa
  * @version 0.0.1 
  */
