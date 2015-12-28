@@ -1,0 +1,23 @@
+{
+  "name": "node-scratch-rsp",
+  "version": "0.0.1",
+  "description": "Node module to connect Scratch via Remote-Sensor-Protocol.",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha specs --require specs/helpers/chai.js --reporter spec",
+    "test-debug": "./node_modules/.bin/mocha specs --require specs/helpers/chai.js --reporter spec --debug"
+  },
+  "keywords": [
+    "Scratch"
+  ],
+  "author": "Koji Yokokawa",
+  "license": "ISC",
+  "dependencies": {
+    "net": "^1.0.2"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.2"
+  }
+}
