@@ -15,6 +15,14 @@
   "dependencies": {
     "net": "^1.0.2"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:yokobond/node-scratch-rsp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yokobond/node-scratch-rsp/issues"
+  },
+  "homepage": "https://github.com/yokobond/node-scratch-rsp",
   "devDependencies": {
     "chai": "^3.4.1",
     "mocha": "^2.3.4",
