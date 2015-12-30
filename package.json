@@ -11,7 +11,7 @@
     "Scratch"
   ],
   "author": "Koji Yokokawa",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "dependencies": {
     "net": "^1.0.2"
   },
