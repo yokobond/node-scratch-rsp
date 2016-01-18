@@ -35,6 +35,8 @@ node_modules
 
 # Visual Studio Code
 .vscode
+jsconfig.json
 
 # DefinitelyTyped
 typings
+tsd.json
