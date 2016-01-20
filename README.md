@@ -24,12 +24,17 @@ Connect Scratch then send sensor-update and send/receive broadcast messages.
 var scratchRSP = require('scratch-rsp');
 console.log('start');
 var scratchSocket = scratchRSP.createConnection('localhost', function () {
-	var sensorMap = new Map([['note', 60], ['seconds', 0.1], ['shift "tone"', -1]]);
-	scratchSocket.sensorUpdate(sensorMap);
-	scratchSocket.broadcast('play note');
+    var sensorsMap = new Map([['note', 60], ['seconds', 0.1], ['shift "tone"', -1]]);
+    scratchSocket.sensorUpdate(sensorsMap);
+    scratchSocket.broadcast('play note');
 });
 scratchSocket.on('broadcast', function (subject) {
-	console.log(subject);
+    console.log(subject);
+});
+scratchSocket.on('sensor-update', function (sensorsMap) {
+    for (var key of sensorsMap.keys()) {
+        console.log(key + " = " + sensorsMap.get(key));
+    }
 });
 ```
 
@@ -41,6 +46,8 @@ scratchSocket.on('broadcast', function (subject) {
 ### Scratch-Socket
 * [`sensorUpdate`](#sensorUpdate)
 * [`broadcast`](#broadcast)
+* [`Event: broadcast`](#broadcastEvent)
+* [`Event: sensor-update`](#sensorUpdateEvent)
 
 ## Connection
 
@@ -54,7 +61,7 @@ Connect host on scratch port and return a Scratch-Socket instance.
 
 ## Scratch-Socket
 
-<a name="broadcast"></a>
+<a name="sensorUpdate"></a>
 ### sensorUpdate(sensorsMap, callback)
 
 Send sensor-update message to the Scratch.
@@ -81,6 +88,11 @@ Returns false if all or part of the data was queued in user memory.
 ### Event: 'broadcast'
 Emit with 'subject' parameter when received broadcast message from Scratch.
 * `subject` - Subject String of the broadcast message.
+
+<a name="sensorUpdateEvent"></a>
+### Event: 'sensor-update'
+Emit with a Map of sensor data when received sensor-update message from Scratch.
+* `sensorsMap` - Map of "sensor-name -> value". The value is a String or Number.
 
 
 ## TODO

@@ -18,9 +18,10 @@ var scratchpPort = 42001;
  */
 exports.createConnection = function (host, connectListener) {
 	var scratchSocket;
-	scratchSocket = net.createConnection(scratchpPort, host, connectListener);
-	asScratchSocket(scratchSocket);
-	return scratchSocket;
+    var scratchSocket;
+    scratchSocket = net.createConnection(scratchpPort, host, connectListener);
+    asScratchSocket(scratchSocket);
+    return scratchSocket;
 };
 
 var asScratchSocket = function (socket) {
@@ -35,17 +36,17 @@ var asScratchSocket = function (socket) {
 	 * @param {function} callback It will be executed when the data is finally written out. 
 	 * @returns {Boolean} Returns true when the data was flushed successfully, or false. 
 	 */
-	socket.sensorUpdate = function (sensorsMap, callback) {
-		var message = 'sensor-update';
-		for (var key of sensorsMap.keys()) {
-			message += ' ';
-			message += '\"';
-			message += key.replace(/"/g, '""');
-			message += '\" ';
-			message += sensorsMap.get(key).toString();
-		}
-		return this.writeScratchMessage(message, callback);
-	};
+    socket.sensorUpdate = function (sensorsMap, callback) {
+        var message = 'sensor-update';
+        for (var key of sensorsMap.keys()) {
+            message += ' ';
+            message += '\"';
+            message += key.replace(/"/g, '""');
+            message += '\" ';
+            message += sensorsMap.get(key).toString();
+        }
+        return this.writeScratchMessage(message, callback);
+    };
 
 	/**
 	 * Send broadcast message to the Scratch. 
@@ -57,12 +58,12 @@ var asScratchSocket = function (socket) {
 	 * @param {function} callback It will be executed when the data is finally written out. 
 	 * @returns {Boolean} Returns true when the data was flushed successfully, or false. 
 	 */
-	socket.broadcast = function (subject, callback) {
-		var message = 'broadcast "';
-		message += subject.replace(/"/g, '""');
-		message += '"';
-		return this.writeScratchMessage(message, callback);
-	};
+    socket.broadcast = function (subject, callback) {
+        var message = 'broadcast "';
+        message += subject.replace(/"/g, '""');
+        message += '"';
+        return this.writeScratchMessage(message, callback);
+    };
 
 	/**
 	 * Write Scratch-Remote-Sensor message to the socket. 
@@ -74,24 +75,26 @@ var asScratchSocket = function (socket) {
 	 * @param {function} callback It will be executed when the data is finally written out.
 	 * @returns {Boolean} Returns true when the data was flushed successfully, or false. 
 	 */
-	socket.writeScratchMessage = function (message, callback) {
-		var buff = new Buffer(message.length + 4);
-		buff.writeUInt32BE(message.length);
-		buff.write(message, 4, 'utf8');
-		return this.write(buff, 'utf8', callback);
-	};
+    socket.writeScratchMessage = function (message, callback) {
+        var buff = new Buffer(message.length + 4);
+        buff.writeUInt32BE(message.length);
+        buff.write(message, 4, 'utf8');
+        return this.write(buff, 'utf8', callback);
+    };
 
-	socket.on('data', function (dataBuffer) {
-		var messageSize = dataBuffer.readUInt32BE(0);
-		var message = dataBuffer.toString('utf8', 4, 4 + messageSize);
-		if (message.lastIndexOf('broadcast', 0) === 0) {
-			var subject = message.substring(9, message.length);
-			subject = subject.trim();
-			subject = subject.replace(/"(?!")/g, '');
-			subject = subject.replace(/""/g, '"');
-			socket.emit('broadcast', subject);
-		}
-	});
-	return socket;
+    socket.on('data', function (dataBuffer) {
+        var messageSize = dataBuffer.readUInt32BE(0);
+        var message = dataBuffer.toString('utf8', 4, 4 + messageSize);
+        if (message.lastIndexOf('broadcast', 0) === 0) {
+            var subject = message.substring(9, message.length);
+            subject = subject.trim();
+            subject = subject.replace(/"(?!")/g, '');
+            subject = subject.replace(/""/g, '"');
+            socket.emit('broadcast', subject);
+        }
+        if (message.lastIndexOf('sensor-update', 0) === 0) {
+            var sensorsMap = new Map();
+            var sensorsMessage = message.substring(13, message.length);
+            for (var data of dataArray) {
 }
 
