@@ -125,4 +125,38 @@ describe('Send Message', function () {
 		}, 1);
 	});
 
+	it('sensor-update receive', function (done) {
+		var host = 'localhost';
+		var scratchPort = 42001;
+		var scratchMock;
+		var sensorsMap = new Map([['note', 60], ['seconds', 0.1], ['shift "tone"', -1], ['nuance', 'mf "< >"'], ['bpm', 120],['pan', 0]]);
+        var scratchMessage = 'sensor-update "note" 60 "seconds" 0.1 "shift ""tone""" -1 "nuance" "mf ""< >""" "bpm" 120 "pan" 0 ';
+		scratchMock = net.createServer(function (socket) {
+			assert.instanceOf(socket, net.Socket);
+			var sentCallback = function () { };
+			var buff = new Buffer(scratchMessage.length + 4);
+			buff.writeUInt32BE(scratchMessage.length);
+			buff.write(scratchMessage, 4, 'utf8');
+			assert.equal(socket.write(buff, 'utf8', sentCallback), true);
+		});
+		scratchMock.listen(scratchPort, host);
+		// give a time to avoid 'error connect ECONNREFUSED'
+		setTimeout(function () {
+			var connectListner = function () { };
+			var scratchSocket = NodeScratch.createConnection(host, connectListner);
+			var sensorUpdateListener = function (receivedMap) {
+                assert.equal(receivedMap.size, sensorsMap.size, 'Received sensorsMap size is not correct');
+                for (var key of sensorsMap.keys()) {
+                    assert.isDefined(receivedMap.get(key));
+                    assert.equal(receivedMap.get(key), sensorsMap.get(key));
+                }
+                // clean up the socket
+				scratchSocket.destroy();
+				scratchMock.close(function (err) {
+					done(err);
+				});
+			};
+			scratchSocket.on('sensor-update', sensorUpdateListener);
+		}, 1);
+	});
 })
