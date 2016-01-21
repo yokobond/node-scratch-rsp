@@ -4,8 +4,8 @@
   "description": "Node module to connect Scratch via Remote-Sensor-Protocol.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha specs --require specs/helpers/chai.js --reporter spec",
-    "test-debug": "./node_modules/.bin/mocha specs --require specs/helpers/chai.js --reporter spec --debug"
+    "test": "./node_modules/.bin/mocha test --require test/helpers/chai.js --reporter spec",
+    "test-debug": "./node_modules/.bin/mocha test --require test/helpers/chai.js --reporter spec --debug"
   },
   "keywords": [
     "Scratch"
