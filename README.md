@@ -96,4 +96,4 @@ Emit with a Map of sensor data when received sensor-update message from Scratch.
 
 
 ## TODO
-* Receive sensor-update from Scratch
+* UDP broadcasting
