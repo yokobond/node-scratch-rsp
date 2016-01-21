@@ -36,13 +36,20 @@ var asScratchSocket = function (socket) {
 	 * @returns {Boolean} Returns true when the data was flushed successfully, or false. 
 	 */
     socket.sensorUpdate = function (sensorsMap, callback) {
-        var message = 'sensor-update';
+        var message = 'sensor-update ';
         for (var key of sensorsMap.keys()) {
-            message += ' ';
             message += '\"';
             message += key.replace(/"/g, '""');
             message += '\" ';
-            message += sensorsMap.get(key).toString();
+            var value = sensorsMap.get(key);
+            if (typeof value == 'number') {
+                message += sensorsMap.get(key).toString();
+            } else {
+                message += '"'
+                message += sensorsMap.get(key).toString().replace(/"/g, '""');
+                message += '"'
+            }
+            message += ' ';
         }
         return this.writeScratchMessage(message, callback);
     };

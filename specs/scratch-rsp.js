@@ -47,8 +47,8 @@ describe('Send Message', function () {
             });
         });
         scratchMock.listen(scratchPort, host);
-        var sensorsMap = new Map([['note', 60], ['seconds', 0.1], ['shift "tone"', -1]]);
-        var scratchMessage = 'sensor-update "note" 60 "seconds" 0.1 "shift ""tone""" -1';
+        var sensorsMap = new Map([['note', 60], ['seconds', 0.1], ['shift "tone"', -1], ['nuance', 'mf "< >"'], ['bpm', 120], ['pan', 0]]);
+        var scratchMessage = 'sensor-update "note" 60 "seconds" 0.1 "shift ""tone""" -1 "nuance" "mf ""< >""" "bpm" 120 "pan" 0 ';
         var messageSize = scratchMessage.length;
         var connectedSpy = sinon.spy();
         var connectListner = function () {
